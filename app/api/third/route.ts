@@ -1,27 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
-  const key = request.nextUrl.searchParams.get("key");
+export async function GET(req: NextRequest) {
+  const key = req.nextUrl.searchParams.get("key");
 
   if (!key) {
     return NextResponse.json({
-      message: "Try harder."
+      step: 3,
+      message: "You need to provide the key as a query parameter.",
+      example: "/api/third?key=value",
+      hint: "Use the decoded word from the previous step."
     });
   }
 
   if (key === "developer") {
     return NextResponse.json({
-      secret: "process.env.SECRET_KEY"
-    });
-  }
-
-  if (key === "process.env.SECRET_KEY") {
-    return NextResponse.json({
-      answer: "secrets"
+      success: true,
+      words: [
+        "code review",
+        "hash",
+        "secrets"
+      ],
+      Achieved: "Great job You've found the three key words. Now, can you can DM me the final answers."
+    //   instruction: "Join them using hyphen (-)"
     });
   }
 
   return NextResponse.json({
-    message: "Wrong key."
+    error: "Incorrect key"
   });
 }
